@@ -170,6 +170,7 @@ const carregarTarefas = async () => {
     try {
         const response = await fetch('https://nodejs-dsruptura.rbpezf.easypanel.host/api/tarefas');
         const tarefas = await response.json();
+        console.log(`tarefas: ${tarefas}`)
         const ul = document.getElementById('lista-tarefas');
         
         ul.innerHTML = ""; // Limpa a lista
