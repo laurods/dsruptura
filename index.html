@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<htm lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DoSimples</title>
+        <link rel="stylesheet" href="style.css" />        
+    </head>
+    <body>
+        <section class="main">
+            <section class="container">
+                <header>
+                    <div class="logo">
+                        <img src="barcode.svg" onclick="focusTxtBarcode()"/>
+                    </div>
+		            <div class="barcode">
+                        <input type="number"  id="barcode" autocomplete="off" required placeholder="Codigo de barras" />
+                    </div>
+                    <div id="msg" class="msg">
+                        <!--Produto não encontrado-->
+                    </div>                    
+                </header>
+                <div class="content">
+                    <div style="width: 80%; margin: auto;">
+                        <canvas id="meuGrafico"></canvas>
+                    </div>
+                    <div class="label">
+                        Quantidades
+                    </div>
+                    <div class="item">
+                        <div id="totalItens"class="quantity"></div>
+                        <div id="emGondola"class="quantity"></div>
+                        <div id="emRuptura"class="quantity"></div>
+                    </div>
+                    <div class="label">
+                        Ultimo produto bipado
+                    </div>
+                    <div class="lastItem">
+                        <div id="description"class="description"></div>
+                    </div>
+                    <div class="label">
+                        Produtos não bipados
+                    </div>
+                    
+                    <div id="items" class="items"></div>
+
+                </div>
+                <div class="footer">
+                    <div class="print" id="btPrint"> 
+			            <img src="printer.png" />		    
+                    </div>
+                    <div class="text">
+                        <form>
+                            <input name="name" autocomplete="off" required placeholder="Pesquisar.." />
+                        </form>                       
+                    </div>
+                    <div class="clear" id="btClear" >
+ 			            <img src="trash.png" />
+                    </div>
+                </div>
+
+                <div id="secao-tarefas">
+                    <h2>Tarefas Disponíveis</h2>
+                    <ul id="lista-tarefas"></ul>
+                </div>
+                
+                <div id="secao-produtos" style="margin-top: 20px;">
+                    <h2 id="titulo-produtos">Produtos da Tarefa</h2>
+                    <div id="container-produtos"></div>
+                </div>
+                
+
+            </section>   
+
+        </section>
+    </body>
+
+</htm>
+<script type="module" src="initial.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

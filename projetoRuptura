@@ -1,0 +1,74 @@
+
+
+npm install express mariadb dotenv
+npm install multer csv-parser
+
+
+
+CREATE TABLE IF NOT EXISTS itens_estoque (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ean VARCHAR(13) NOT NULL UNIQUE,
+    descricao VARCHAR(255) NOT NULL,
+    tarefa VARCHAR(100) NOT NULL,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxdicas quando usar servidor xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ip: 192.168.0.8
+gateway: 192.168.0.1
+dns1: 181.213.132.2
+dns2: 181.213.132.3
+
+atualizar:
+
+instalar openssh:
+
+Descobri o usuário:
+whoami
+u0_a227
+
+Definir senha:
+passwd
+senha: 231163
+
+subir servidor
+sshd
+
+acessar o dispositivo
+ssh u0_a227@192.168.0.8 -p 8022
+
+instalar neofetch
+pkg install neofetch
+
+instalar nodejs
+pkg install nodejs
+pkg install nodejs-lts
+
+instalar psu
+pkg install tsu
+
+copiar a pasta
+scp -r /home/it1/myProjects/ds u0_a227@192.168.0.8:/
+
+scp -P 8022 label.zpl u0_a227@192.168.0.8:/data/data/com.termux/files/home
+
+scp -P 8022 style.css u0_a227@192.168.0.8:/data/data/com.termux/files/home/app
+scp -P 8022 index.html u0_a227@192.168.0.8:/data/data/com.termux/files/home/app
+
+scp -rP 8022 ds u0_a227@192.168.0.8:/data/data/com.termux/files/home
+
+Criar pasta ds
+mkdir ds
+
+Entrar na pasta ds -> cd ds
+criar arquivo de configuração -> npm init -y
+
+Instalar nano -> pkg install nano
+
+Editar arquivo package.json
+
+
+Instalar o fastify
+npm install fastify
