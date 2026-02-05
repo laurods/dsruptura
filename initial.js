@@ -168,7 +168,7 @@ const clearAllData = () => {
 // 1. Função para buscar e exibir a lista de tarefas
 const carregarTarefas = async () => {
     try {
-        const response = await fetch('https://sua-api.easypanel.host/api/tarefas');
+        const response = await fetch('https://nodejs-dsruptura.rbpezf.easypanel.host/api/tarefas');
         const tarefas = await response.json();
         const ul = document.getElementById('lista-tarefas');
         
@@ -228,5 +228,5 @@ const buscarProdutosDaTarefa = async (nomeTarefa) => {
 main();
 
 // Inicializa a lista ao carregar a página
-//carregarTarefas();
+carregarTarefas();
 
