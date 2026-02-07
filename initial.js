@@ -170,7 +170,7 @@ const carregarTarefas = async () => {
     try {
         const response = await fetch('https://mariadb-api.rbpezf.easypanel.host/api/tarefas');
         const tarefas = await response.json();
-        console.log(`tarefas: ${tarefas[0]}`)
+        console.log(`tarefa: ${tarefas[0]}`)
         const ul = document.getElementById('lista-tarefas');
         
         ul.innerHTML = ""; // Limpa a lista
