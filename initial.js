@@ -1,5 +1,6 @@
-import { itens } from './listaItensEstoque.js'; 
-
+//import { itens } from './listaItensEstoque.js'; 
+const secContainer = document.getElementById('secao-conteiner');
+const secHeader = document.getElementById('secao-header');
 const elBarcode = document.getElementById('barcode');
 const elMsg = document.getElementById('msg');
 const elItemsContainer = document.getElementById('items');
@@ -7,7 +8,8 @@ const elDescription = document.getElementById('description');
 const elTotalItens = document.getElementById('totalItens');
 const elEmGondola = document.getElementById('emGondola');
 const elemRuptura = document.getElementById('emRuptura');
-const elBtPrint = document.getElementById('btPrint');
+secContainer.style.display = 'none';
+secHeader.style.display = 'none';
 let meuGraficoInstancia = null;
 
 
@@ -18,15 +20,24 @@ const main = () => {
     elBarcode.addEventListener('keyup', () => {
         handleTxtBarcode();
     });
-    elBtPrint.addEventListener('click', () => {
-        filterProducts();
-    });
     
     const elBtClear = document.getElementById('btClear');
     elBtClear.addEventListener('click', () => {
         if (confirm("Deseja realmente apagar todos os dados da conferência?")) {
             clearAllData();
         }
+    });
+
+    const elBtSave = document.getElementById('btSave');
+    elBtSave.addEventListener('click', () => {
+        if (confirm("A tarefa realizada será salva")) {
+            saveData();
+        }
+    });
+
+    const elBtLogo = document.getElementById('btLogo');
+    elBtLogo.addEventListener('click', () => {       
+        buscarHistorico();
     });
 }
 
@@ -81,7 +92,9 @@ const handleListItems = (productsEmRuptura) => {
 
 
 const filterProducts = () => {
+    secContainer.style.display = 'block';
     try {
+        const itens = JSON.parse(localStorage.getItem('dados')) || []; // itens da tarefa
         const list = JSON.parse(localStorage.getItem('products')) || []; // lista de itens bipados                    
         const itensEmGondolas = ([...list]) => { // compara os produtos do ABC de estoque com os produtos bipados na gondola
             return itens.filter(product => list.includes(product.ean))
@@ -95,9 +108,9 @@ const filterProducts = () => {
 
         atualizarGrafico(productsEmRuptura.length, productsEmGondola.length)  
 
-        elTotalItens.innerHTML=`<span>Estoque:</span> ${itens.length}`
-        elEmGondola.innerHTML=`<span>Expostos:</span> ${productsEmGondola.length}`
-        elemRuptura.innerHTML=`<span>Ruptura:</span> ${productsEmRuptura.length}`
+        elTotalItens.innerHTML=`<span>Estoque:</span> <span id='vlrItens'>${itens.length}</span> `
+        elEmGondola.innerHTML=`<span>Expostos:</span> <span id='vlrGondola'>${productsEmGondola.length}</span>`
+        elemRuptura.innerHTML=`<span>Ruptura:</span> <span id='vlrRuptura'>${((productsEmRuptura.length)/(itens.length))*100}%</span>`
         handleListItems(productsEmRuptura);
     } catch (error) {
         console.error('Error:', error);
@@ -148,6 +161,7 @@ const atualizarGrafico = (totalEstoque, totalBipado) => {
 const clearAllData = () => {
     // 1. Limpa o LocalStorage
     localStorage.removeItem('products');
+    localStorage.removeItem('dados');
 
     // 2. Limpa a lista na tela e as mensagens
     document.getElementById('items').innerHTML = "";
@@ -160,51 +174,81 @@ const clearAllData = () => {
         meuGraficoInstancia = null;
     }
 
+    secContainer.style.display = 'none';
+    secHeader.style.display = 'none';
+    document.getElementById('secao-tarefas').style.display = 'block';
+
     // 4. Volta o foco para o campo de barcode
     focusTxtBarcode();
     // 5. Gera novo grafico com valores zerados
     gerarGrafico(0, 0)
 }
+
+const saveData = () => {
+    let txtTarefa = document.getElementById('txtTarefa').innerHTML;
+    let txtProtocolo = document.getElementById('txtProtocolo').innerHTML;
+    let txtItens = document.getElementById('vlrItens').innerHTML;
+    let txtExpostos = document.getElementById('vlrGondola').innerHTML;
+    let txtRuptura = document.getElementById('vlrRuptura').innerHTML;
+
+    let objData = {
+        tarefa: txtTarefa,
+        protocolo: txtProtocolo,
+        itens: txtItens,
+        exposto: txtExpostos,
+        ruptura: txtRuptura
+    }
+
+    salvarDesempenho(objData)
+    console.log(objData);
+
+}
 // 1. Função para buscar e exibir a lista de tarefas
 const carregarTarefas = async () => {
     try {
         const response = await fetch('https://mariadb-api.rbpezf.easypanel.host/api/tarefas');
-        const tarefas = await response.json();
-        console.log(`tarefa: ${tarefas[0]}`)
-        const ul = document.getElementById('lista-tarefas');
+        const dados = await response.json();
+               
+       
+        const ul = document.getElementById('lista-tarefas');        
         
         ul.innerHTML = ""; // Limpa a lista
+        
+        dados.protocolo.forEach((item, index) => {
+            const codProtocolo = item.protocolo;
+            const nomeTarefa = dados.tarefa[index].tarefa;
 
-        tarefas.forEach(t => {
-            const li = document.createElement('li');
-            const link = document.createElement('a');
-            
-            link.href = "#";
-            link.textContent = t.tarefa;
-            link.style.cursor = "pointer";
-            link.style.color = "blue";
+            const li = document.createElement('li')
+            li.classList.add('lista-item');
+            li.innerHTML = nomeTarefa;
+            li.style.cursor = "pointer";
             
             // Evento de clique para buscar produtos
-            link.onclick = (e) => {
+            li.onclick = (e) => {
                 e.preventDefault();
-                buscarProdutosDaTarefa(t.tarefa);
+                buscarProdutosDaTarefa(codProtocolo, nomeTarefa);
             };
-
-            li.appendChild(link);
+            
             ul.appendChild(li);
         });
+        
     } catch (error) {
         console.error("Erro ao carregar tarefas:", error);
     }
 };
 
 // 2. Função para buscar os produtos da tarefa clicada
-const buscarProdutosDaTarefa = async (nomeTarefa) => {
+const buscarProdutosDaTarefa = async (codProtocolo, nomeTarefa) => {
     try {
-        const response = await fetch(`https://sua-api.easypanel.host/api/tarefas/${nomeTarefa}/produtos`);
+        const response = await fetch(`https://mariadb-api.rbpezf.easypanel.host/api/tarefas/${codProtocolo}/produtos`);
         const produtos = await response.json();
+        localStorage.setItem('dados', JSON.stringify(produtos));
+        document.getElementById('secao-tarefas').style.display = 'none';
+        secHeader.style.display = 'block'; 
+        console.log('produtos', produtos)
         
-        document.getElementById('titulo-produtos').textContent = `Produtos da Tarefa: ${nomeTarefa}`;
+        document.getElementById('titulo-produtos').innerHTML = `<p>Tarefa: <span id='txtTarefa'>${nomeTarefa}</span></p>`;
+        document.getElementById('protocolo-tarefa').innerHTML = `<p>Protocolo: <span id='txtProtocolo'>${codProtocolo}</span></p>`;
         const container = document.getElementById('container-produtos');
         container.innerHTML = "";
 
@@ -213,18 +257,81 @@ const buscarProdutosDaTarefa = async (nomeTarefa) => {
             return;
         }
 
-        // Exibe os produtos em uma lista simples
-        produtos.forEach(p => {
-            const div = document.createElement('div');
-            div.className = 'item-produto';
-            div.innerHTML = `<strong>${p.ean}</strong> - ${p.descricao} (${p.categoria})`;
-            container.appendChild(div);
-        });
-        
     } catch (error) {
         alert("Erro ao carregar produtos desta tarefa.");
     }
 };
+
+async function salvarDesempenho(dados) {
+    try {
+      const response = await fetch('https://mariadb-api.rbpezf.easypanel.host/api/desempenho', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dados) // Envia o objeto formatado
+      });
+  
+      const resultado = await response.json();
+      console.log(resultado.mensagem);
+    } catch (error) {
+      console.error("Erro na requisição:", error);
+    }
+  }
+
+  async function buscarHistorico() {
+    try {
+      // Monta a URL com ou sem o filtro de protocolo
+      const url = `https://mariadb-api.rbpezf.easypanel.host/api/desempenho`;
+      
+      const response = await fetch(url);
+      const dados = await response.json();
+  
+      console.log("Histórico carregado:", dados);
+      // Aqui você chamaria a função para renderizar na sua lista <ul> ou <table>
+      return dados;
+    } catch (error) {
+      console.error("Erro ao carregar histórico:", error);
+    }
+  }
+
+
+  async function renderizarHistorico() {
+    const lista = document.getElementById('lista-historico');
+    
+    try {
+      const response = await fetch('https://mariadb-api.rbpezf.easypanel.host/api/desempenho');
+      const dados = await response.json();
+  
+      if (dados.length === 0) {
+        lista.innerHTML = '<li class="lista-feedback">Nenhum registro encontrado.</li>';
+        return;
+      }
+  
+      lista.innerHTML = dados.map(item => `
+        <li class="lista-item">
+          <div class="info-principal">
+            <span class="item-protocolo">${item.protocolo}</span>
+            <span class="item-tarefa">${item.tarefa}</span>
+          </div>
+          <div class="info-stats">
+            <span class="item-itens">📦 ${item.itens} itens</span>
+            <span class="item-ruptura">⚠️ ${item.ruptura} rupturas</span>
+          </div>
+        </li>
+      `).join('');
+  
+    } catch (error) {
+      lista.innerHTML = '<li class="lista-feedback text-red-400">Erro ao carregar dados.</li>';
+    }
+  }
+  
+  // Chamar ao carregar a página
+  document.addEventListener('DOMContentLoaded', renderizarHistorico);
+  // Chamar ao clicar no botão atualizar
+  document.getElementById('btLogo').addEventListener('click', renderizarHistorico);
+  
+  
 
 main();
 

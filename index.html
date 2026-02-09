@@ -8,11 +8,70 @@
         <link rel="stylesheet" href="style.css" />        
     </head>
     <body>
+        <header class="header-main">
+            <div class="header-container">
+              <div class="logo-area" id="btLogo">
+                <!-- Logo SVG Moderno (Círculo com Check) -->
+                <svg class="logo-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                  <path d="M8 12L11 15L16 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="app-name">Do<span class="text-accent">Simples</span></span>
+              </div>
+              
+              <nav class="header-nav">
+                <span class="status-badge">Suporte (54) 9957.2366</span>
+              </nav>
+            </div>
+          </header>
+                <!-- Seção de Desempenho -->
+            <section class="historico-container">
+                <div class="historico-header">
+                <h3 class="text-xl font-bold text-white">Últimos Desempenhos</h3>
+                <button id="btn-atualizar" class="btn-icon" title="Atualizar">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                </button>
+                </div>
+            
+                <!-- Cabeçalho da Lista (Opcional para organizar) -->
+                <div class="lista-labels">
+                <span>Protocolo / Tarefa</span>
+                <span>Itens / Ruptura</span>
+                </div>
+            
+                <ul id="lista-historico" class="lista-container">
+                <!-- Os itens do banco de dados entrarão aqui -->
+                <li class="lista-feedback">Carregando histórico...</li>
+                </ul>
+            </section>
+  
         <section class="main">
-            <section class="container">
+            <div id="secao-tarefas">               
+                <h2 class="titulo-tarefa">Tarefas</h2>
+                <ul id="lista-tarefas" class="lista-container"></ul>
+            </div>
+            <div id="secao-header" style="margin-top: 20px;">
+                <div id="titulo-produtos"></div>
+                <div id="protocolo-tarefa"></div>
+                <div id="container-produtos"></div>
                 <header>
                     <div class="logo">
-                        <img src="barcode.svg" onclick="focusTxtBarcode()"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" 
+                        width="36" height="36" 
+                        viewBox="0 0 24 24" 
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2" 
+                        stroke-linecap="round" 
+                        stroke-linejoin="round" 
+                        class="lucide lucide-scan-barcode-icon lucide-scan-barcode">
+                        <path d="M3 7V5a2 2 0 0 1 2-2h2"/>
+                        <path d="M17 3h2a2 2 0 0 1 2 2v2"/>
+                        <path d="M21 17v2a2 2 0 0 1-2 2h-2"/>
+                        <path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
+                        <path d="M8 7v10"/><path d="M12 7v10"/>
+                        <path d="M17 7v10"/>
+                    </svg>
                     </div>
 		            <div class="barcode">
                         <input type="number"  id="barcode" autocomplete="off" required placeholder="Codigo de barras" />
@@ -21,17 +80,11 @@
                         <!--Produto não encontrado-->
                     </div>                    
                 </header>
+            </div>             
+            <section id="secao-conteiner" class="container">
+                
+                
                 <div class="content">
-                    <div id="secao-tarefas">
-                        <h2>Tarefas Disponíveis no Sistema</h2>
-                        <ul id="lista-tarefas"></ul>
-                    </div>
-                    
-                    <div id="secao-produtos" style="margin-top: 20px;">
-                        <h2 id="titulo-produtos">Produtos da Tarefa</h2>
-                        <div id="container-produtos"></div>
-                    </div>
-                    
                     <div style="width: 80%; margin: auto;">
                         <canvas id="meuGrafico"></canvas>
                     </div>
@@ -57,22 +110,40 @@
 
                 </div>
                 <div class="footer">
-                    <div class="print" id="btPrint"> 
-			            <img src="printer.png" />		    
+                    <div class="save" id="btSave"> 
+			            <svg xmlns="http://www.w3.org/2000/svg" 
+                        width="36" height="36" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        stroke-width="2" 
+                        stroke-linecap="round" 
+                        stroke-linejoin="round" 
+                        class="lucide lucide-save-icon lucide-save">
+                        <path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
+                        <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/>
+                        <path d="M7 3v4a1 1 0 0 0 1 1h7"/>
+                        </svg>	    
                     </div>
-                    <div class="text">
-                        <form>
-                            <input name="name" autocomplete="off" required placeholder="Pesquisar.." />
-                        </form>                       
-                    </div>
+                   
                     <div class="clear" id="btClear" >
- 			            <img src="trash.png" />
+                        <svg xmlns="http://www.w3.org/2000/svg" 
+                        width="36" height="36" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        stroke-width="2" 
+                        stroke-linecap="round" 
+                        stroke-linejoin="round" 
+                        class="lucide lucide-trash2-icon lucide-trash-2">
+                        <path d="M10 11v6"/>
+                        <path d="M14 11v6"/>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+                        <path d="M3 6h18"/>
+                        <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        </svg>
                     </div>
                 </div>
-
-                
-                
-
             </section>   
 
         </section>
