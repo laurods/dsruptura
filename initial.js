@@ -17,6 +17,7 @@ const main = () => {
     focusTxtBarcode();
     handleListItems();
     elBarcode.addEventListener('keyup', () => {
+        alert(elBarcode.value)
         handleTxtBarcode();
     });
     
