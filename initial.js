@@ -58,7 +58,7 @@ const handleTxtBarcode = () => {
     } else {
         elMsg.innerHTML = 'Código de barras inválido (precisa de 13 dígitos).';
     }
-    /*focusTxtBarcode();*/
+    focusTxtBarcode();
 }
 
 // Centraliza a renderização para evitar repetição de código
