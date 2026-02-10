@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<htm lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DoSimples</title>
+        <link rel="stylesheet" href="desempenho.css" />        
+    </head>
+    <body>
+        <header class="header-main">
+            <div class="header-container">
+              <div class="logo-area" id="btLogo">
+                <!-- Logo SVG Moderno (Círculo com Check) -->
+                <svg class="logo-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                  <path d="M8 12L11 15L16 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="app-name">Do<span class="text-accent">Simples</span></span>
+              </div>
+              
+              <nav class="header-nav">
+                <span class="status-badge">Suporte (54) 9957.2366</span>
+              </nav>
+            </div>
+        </header>
+                <!-- Seção de Desempenho -->
+            <section class="historico-container">
+                <div class="historico-header">
+                <h3 class="text-xl font-bold text-white">Últimos Desempenhos</h3>
+                <button id="btn-atualizar" class="btn-icon" title="Atualizar">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                </button>
+                </div>
+            
+                <!-- Cabeçalho da Lista (Opcional para organizar) -->
+                <div class="lista-labels">
+                <span>Protocolo / Tarefa</span>
+                <span>Itens / Ruptura</span>
+                </div>
+            
+                <ul id="lista-historico" class="lista-container">
+                <!-- Os itens do banco de dados entrarão aqui -->
+                <li class="lista-feedback">Carregando histórico...</li>
+                </ul>
+            </section>
+
+    </body>
+
+</htm>
+<script type="module" src="desempenho.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
