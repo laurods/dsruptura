@@ -16,10 +16,41 @@ let meuGraficoInstancia = null;
 const main = () => {
     focusTxtBarcode();
     handleListItems();
+    /*
     elBarcode.addEventListener('keyup', () => {
         handleTxtBarcode();
     });
-    
+    */
+    document.getElementById('barcodeForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Impede o reload da página
+        
+        const code = document.getElementById('barcode').value.trim();      
+
+            if (code.length === 13) {        
+                    addItem(code);
+                    renderAll();
+                    this.reset();
+                    filterProducts(); 
+            
+            } else {
+                elMsg.innerHTML = 'Código de barras inválido (precisa de 13 dígitos).';
+            }          
+        
+    });
+    /*
+  let timer;
+    elBarcode.addEventListener('input', () => {
+        clearTimeout(timer); // Limpa o contador toda vez que um caractere entra
+        
+        // Espera 200ms sem receber novos caracteres para disparar a ação
+        timer = setTimeout(() => {
+            if (elBarcode.value) {
+                console.log("Leitura por tempo concluída:", elBarcode.value);
+                // Executa sua ação aqui
+            }
+        }, 200); 
+    });
+    */
     const elBtClear = document.getElementById('btClear');
     elBtClear.addEventListener('click', () => {
         if (confirm("Deseja realmente apagar todos os dados da conferência?")) {

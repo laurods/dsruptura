@@ -19,6 +19,7 @@ body {
 header {
     display:flex;
     border-radius: 3px;
+    background-color: red;
 }
 
 .titulo-tarefa{
@@ -46,7 +47,7 @@ header .barcode {
    padding: 5px 5px 5px;
    border: transparent;
    outline: none;
-   background-color: #4f4f4f;
+   background-color: white;
  }
 header .msg {
     padding-top: 5px;
