@@ -19,6 +19,7 @@ body {
 header {
     display:flex;
     border-radius: 3px;
+    background-color: #FFF;
 }
 
 .titulo-tarefa{
@@ -29,8 +30,7 @@ header .logo {
     width: 100px;
     height: 40px;
     flex: 1;
-    text-align: center;
-    
+    text-align: center;   
 
 }
 
