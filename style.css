@@ -19,7 +19,6 @@ body {
 header {
     display:flex;
     border-radius: 3px;
-    background-color: red;
 }
 
 .titulo-tarefa{
@@ -36,7 +35,7 @@ header .logo {
 }
 
 header .barcode {
-    flex: 4;
+    flex: 10;
 }
 
 .barcode input {
