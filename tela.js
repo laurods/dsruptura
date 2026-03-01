@@ -3,6 +3,7 @@ const divDonutChart = document.getElementById('donut-chart');
 const sectionTaskList = document.getElementById('task-section');
 const sectionBarcode = document.getElementById('barcode-section');
 const sectionTaskCard = document.getElementById('task-card');
+const btBarcode = document.getElementById('btBarcode');
 const inputBarcode = document.getElementById('barcode');
 const spanEstoque = document.getElementById('estoque');
 const spanExpostos = document.getElementById('expostos');
@@ -12,6 +13,14 @@ const pMsg = document.getElementById('msg');
 divContent.style.display = 'none';
 sectionBarcode.style.display = 'none';
 sectionTaskCard.style.display = 'none';
+btBarcode.addEventListener('click', () => {
+    inputBarcode.focus();
+    btBarcode.classList.remove("btBarcode");
+    btBarcode.classList.add("btBarcodeLigado");
+    btBarcode.innerHTML = "";
+
+
+});
 
 /*Se usuario fechar a tela ja tiver iniciado a tarefa */
 document.addEventListener("DOMContentLoaded", function() {
