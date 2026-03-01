@@ -1,5 +1,6 @@
 const divContent = document.getElementById('content');
 const divDonutChart = document.getElementById('donut-chart');
+const sectionTaskList = document.getElementById('task-section');
 const sectionBarcode = document.getElementById('barcode-section');
 const sectionTaskCard = document.getElementById('task-card');
 const inputBarcode = document.getElementById('barcode');
@@ -11,6 +12,18 @@ const pMsg = document.getElementById('msg');
 divContent.style.display = 'none';
 sectionBarcode.style.display = 'none';
 sectionTaskCard.style.display = 'none';
+
+/*Se usuario fechar a tela ja tiver iniciado a tarefa */
+document.addEventListener("DOMContentLoaded", function() {
+    const list = JSON.parse(localStorage.getItem('products')) || [];
+    if(list.length > 0) {
+        inputBarcode.focus();
+        filterProducts();
+    }
+    console.log("O DOM está pronto!");
+    // Seu código aqui
+});
+
 
 /*Pega o codigo de barras bipado*/
 document.getElementById('barcodeForm').addEventListener('submit', function(event) {
@@ -50,9 +63,7 @@ const filterProducts = () => {
             return itens.filter(product => !list.includes(product.ean))
         }
         const productsEmGondola = itensEmGondolas(list)
-        const productsEmRuptura = itensEmRuptura(list)
-
-        //atualizarGrafico(productsEmRuptura.length, productsEmGondola.length)  
+        const productsEmRuptura = itensEmRuptura(list) 
 
         spanEstoque.innerHTML= itens.length;
         spanExpostos.innerHTML= productsEmGondola.length;
@@ -61,7 +72,9 @@ const filterProducts = () => {
         let percRuptura = (((productsEmRuptura.length)/(itens.length))*100).toFixed(0);
         let percExpostos = (100 - percRuptura );
         divDonutChart.style.background = `conic-gradient( #f43f5e 0% ${percRuptura}% , #10b981 ${percExpostos}% 100%)`
+        sectionBarcode.style.display = 'block';
         divContent.style.display = 'block';
+        sectionTaskList.style.display = 'none';
         //handleListItems(productsEmRuptura);
     } catch (error) {
         console.error('Error:', error);
