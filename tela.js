@@ -25,6 +25,13 @@ btIniciarColeta.addEventListener('click', () => {
     btIniciarColeta.innerHTML = "TAREFA INICIADA"
 });
 
+window.addEventListener('load', function() {
+    setTimeout(function() {
+      window.scrollTo(0, 1);
+    }, 0);
+  });
+  
+
 btExcluir.addEventListener('click', () => {
     clearAllData();
 });
@@ -36,9 +43,6 @@ document.addEventListener("DOMContentLoaded", function() {
         inputBarcode.focus();
         filterProducts();
     }
-    setTimeout(function() {
-        window.scrollTo(0, 1);
-      }, 0);
    
 });
 
@@ -69,6 +73,7 @@ const clearAllData = () => {
     localStorage.removeItem('dados');
     sectionBarcode.style.display = 'none';
     divContent.style.display = 'none';
+    sectionTaskCard.style.display = 'none';
     sectionTaskList.style.display = 'block';
 }
 
