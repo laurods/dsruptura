@@ -1,9 +1,11 @@
 const divContent = document.getElementById('content');
 const divDonutChart = document.getElementById('donut-chart');
+const divBolinha = document.getElementById('bolinha');
 const sectionTaskList = document.getElementById('task-section');
 const sectionBarcode = document.getElementById('barcode-section');
 const sectionTaskCard = document.getElementById('task-card');
-const btBarcode = document.getElementById('btBarcode');
+const btIniciarColeta = document.getElementById('btIniciarColeta');
+const btExcluir = document.getElementById('btExcluir');
 const inputBarcode = document.getElementById('barcode');
 const spanEstoque = document.getElementById('estoque');
 const spanExpostos = document.getElementById('expostos');
@@ -13,13 +15,14 @@ const pMsg = document.getElementById('msg');
 divContent.style.display = 'none';
 sectionBarcode.style.display = 'none';
 sectionTaskCard.style.display = 'none';
-btBarcode.addEventListener('click', () => {
-    inputBarcode.focus();
-    btBarcode.classList.remove("btBarcode");
-    btBarcode.classList.add("btBarcodeLigado");
-    btBarcode.innerHTML = "";
+btIniciarColeta.addEventListener('click', () => {
+    inputBarcode.focus();    
+    divBolinha.classList.add("piscando");
+    btIniciarColeta.innerHTML = "TAREFA INICIADA"
+});
 
-
+btExcluir.addEventListener('click', () => {
+    clearAllData();
 });
 
 /*Se usuario fechar a tela ja tiver iniciado a tarefa */
@@ -53,6 +56,14 @@ document.getElementById('barcodeForm').addEventListener('submit', function(event
         }          
     
 });
+const clearAllData = () => {
+    // 1. Limpa o LocalStorage
+    localStorage.removeItem('products');
+    localStorage.removeItem('dados');
+    sectionBarcode.style.display = 'none';
+    divContent.style.display = 'none';
+    sectionTaskList.style.display = 'block';
+}
 
 const addItem = (data) => {
     const list = JSON.parse(localStorage.getItem('products')) || [];
@@ -149,31 +160,7 @@ const handleListItems = (productsEmRuptura) => {
 /*
 
 
-const clearAllData = () => {
-    // 1. Limpa o LocalStorage
-    localStorage.removeItem('products');
-    localStorage.removeItem('dados');
 
-    // 2. Limpa a lista na tela e as mensagens
-    document.getElementById('items').innerHTML = "";
-    document.getElementById('msg').innerHTML = "Conferência reiniciada.";
-    document.getElementById('description').innerHTML = "";
-
-    // 3. Destrói o gráfico se ele existir
-    if (meuGraficoInstancia) {
-        meuGraficoInstancia.destroy();
-        meuGraficoInstancia = null;
-    }
-
-    secContainer.style.display = 'none';
-    secHeader.style.display = 'none';
-    document.getElementById('secao-tarefas').style.display = 'block';
-
-    // 4. Volta o foco para o campo de barcode
-    focusTxtBarcode();
-    // 5. Gera novo grafico com valores zerados
-    gerarGrafico(0, 0)
-}
 
 const saveData = () => {
     let txtTarefa = document.getElementById('txtTarefa').innerHTML;

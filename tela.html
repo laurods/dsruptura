@@ -26,14 +26,15 @@
         </div>
     </section>
     <section id="task-card" class="task-card">
-        <span class="badge">EM ANDAMENTO</span>
+        <span id="btIniciarColeta" class="badge">INICIAR TAREFA</span>
+        <div id="bolinha"></div>
         <div id="task-content" class="task-content">
             <h2 id="nomeTarefa"></h2>
-            <p id="protocoloTarefa"></p>
+            <p id="protocoloTarefa"></p>            
         </div>
+        <button id="btExcluir" class="btn btn-danger">EXCLUIR TAREFA</button>
     </section>
-    <section id='barcode-section' class="barcode-section">
-        <button id="btBarcode" class="btBarcode">OFF</button>
+    <section id='barcode-section' class="barcode-section">        
         <form id="barcodeForm">
             <input type="text" autofocus  id="barcode" autocomplete="off" required />
         </form>
@@ -78,8 +79,8 @@
         </section>
     
         <footer class="actions">
-            <button class="btn btn-primary">💾 SALVAR RELATÓRIO</button>
-            <button class="btn btn-danger">🗑️ LIMPAR</button>
+            <button class="btn btn-primary">SALVAR TAREFA</button>
+            
         </footer>
     </div>
     
