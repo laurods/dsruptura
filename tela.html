@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="tela.css">
 </head>
 <body>
-
+<div id="loader" class="loader"></div>
 <div class="app-container">
     <header class="header">
         <div class="logo-section">
@@ -28,16 +28,21 @@
     <section id="task-card" class="task-card">
         <span id="btIniciarColeta" class="badge">INICIAR TAREFA</span>
         <div id="bolinha"></div>
-        <div id="task-content" class="task-content">
-            <h2 id="nomeTarefa"></h2>
-            <p id="protocoloTarefa"></p>            
-        </div>
-        <button id="btExcluir" class="btn btn-danger">EXCLUIR TAREFA</button>
-    </section>
-    <section id='barcode-section' class="barcode-section">        
         <form id="barcodeForm">
             <input type="text" autofocus  id="barcode" autocomplete="off" required />
-        </form>
+        </form>        
+        <div id="task-content" class="task-content">
+            <h2 id="nomeTarefa"></h2>
+            <div class="task-content-bottom">
+                <p id="protocoloTarefa"></p>
+                <button id="btExcluir" class="btn btn-danger">CANCELAR</button>
+            </div>                                    
+        </div>
+        
+        
+
+    </section>
+    <section id='barcode-section' class="barcode-section">  
         <p id="msg"></p>
     </section>   
 
@@ -68,18 +73,21 @@
         </section>
     
         <section class="list-section">
-            <h3>Último Item Bipado</h3>
             <div class="product-item">
-                <div class="icon-box">📦</div>
                 <div class="product-info">
-                    <h4>CHINELO HAVAIANAS SLIM GLOSS PRETO</h4>
-                    <p>7895265145282</p>
+                    <p>Último Item Bipado</p>
+                    <h4 id="lastProduct"></h4>                    
                 </div>
+                <button class="btn btn-primary">SALVAR TAREFA</button>
             </div>
+        </section>
+        <section class="list-section">
+            <h3>Produtos Ruptura</h3>
+            <div id="item-ruptura" class="item-ruptura"></div>
         </section>
     
         <footer class="actions">
-            <button class="btn btn-primary">SALVAR TAREFA</button>
+            
             
         </footer>
     </div>

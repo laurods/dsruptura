@@ -1,6 +1,8 @@
 const divContent = document.getElementById('content');
 const divDonutChart = document.getElementById('donut-chart');
+const divLoader = document.getElementById('loader');
 const divBolinha = document.getElementById('bolinha');
+const divItemRuptura = document.getElementById('item-ruptura');
 const sectionTaskList = document.getElementById('task-section');
 const sectionBarcode = document.getElementById('barcode-section');
 const sectionTaskCard = document.getElementById('task-card');
@@ -12,7 +14,9 @@ const spanExpostos = document.getElementById('expostos');
 const spanRuptura = document.getElementById('ruptura');
 const spanPercentagem = document.getElementById('percentage');
 const pMsg = document.getElementById('msg');
+const hLastProduct = document.getElementById('lastProduct');
 divContent.style.display = 'none';
+divLoader.style.display = 'none';
 sectionBarcode.style.display = 'none';
 sectionTaskCard.style.display = 'none';
 btIniciarColeta.addEventListener('click', () => {
@@ -32,8 +36,10 @@ document.addEventListener("DOMContentLoaded", function() {
         inputBarcode.focus();
         filterProducts();
     }
-    console.log("O DOM está pronto!");
-    // Seu código aqui
+    setTimeout(function() {
+        window.scrollTo(0, 1);
+      }, 0);
+   
 });
 
 
@@ -47,6 +53,7 @@ document.getElementById('barcodeForm').addEventListener('submit', function(event
                 addItem(code);
                 this.reset();
                 inputBarcode.focus();
+                hLastProduct.innerHTML = code;
                 filterProducts(); 
         
         } else {
@@ -89,13 +96,14 @@ const filterProducts = () => {
         spanExpostos.innerHTML= productsEmGondola.length;
         spanRuptura.innerHTML=`${(((productsEmRuptura.length)/(itens.length))*100).toFixed(0)}%`;
         spanPercentagem.innerHTML = `${(((productsEmRuptura.length)/(itens.length))*100).toFixed(0)}%`;
+
         let percRuptura = (((productsEmRuptura.length)/(itens.length))*100).toFixed(0);
         let percExpostos = (100 - percRuptura );
         divDonutChart.style.background = `conic-gradient( #f43f5e 0% ${percRuptura}% , #10b981 ${percExpostos}% 100%)`
         sectionBarcode.style.display = 'block';
         divContent.style.display = 'block';
         sectionTaskList.style.display = 'none';
-        //handleListItems(productsEmRuptura);
+        handleListItems(productsEmRuptura);
     } catch (error) {
         console.error('Error:', error);
     }
@@ -137,24 +145,15 @@ const focusTxtBarcode = () => {
 
 
 const handleListItems = (productsEmRuptura) => {
-    /*
+    
     if (productsEmRuptura && Array.isArray(productsEmRuptura)) {
         for (let i = 0; i < productsEmRuptura.length; i++){
             const itemDiv = document.createElement('div');
-            itemDiv.className = 'item';
-            itemDiv.innerHTML = `<div class="description">${productsEmRuptura[i].descricao}</div>`;
-            elItemsContainer.appendChild(itemDiv);
-            
+            //itemDiv.className = 'product-item';
+            itemDiv.innerHTML = `<h4>${productsEmRuptura[i].descricao}</h4>`;
+            divItemRuptura.appendChild(itemDiv);            
         }        
     }
-        */
-     /*Pega o ultimo ean lido*/
-     /*
-   const list = JSON.parse(localStorage.getItem('products')) || [];   
-    if ( list.length > 0) {
-        elDescription.innerHTML =  list[ list.length - 1];
-    }
-  */    
 }
 
 /*
@@ -184,6 +183,8 @@ const saveData = () => {
     */
 // 1. Função para buscar e exibir a lista de tarefas
 const carregarTarefas = async () => {
+    sectionTaskList.style.display = 'none';
+    divLoader.style.display = 'block';
     try {
         const response = await fetch('https://mariadb-api.rbpezf.easypanel.host/api/tarefas');
         const dados = await response.json();
@@ -206,6 +207,8 @@ const carregarTarefas = async () => {
             
             div.appendChild(bt);
         });
+        sectionTaskList.style.display = 'block';
+        divLoader.style.display = 'none';
     } catch (error) {
         console.error("Erro ao carregar tarefas:", error);
     }
