@@ -25,13 +25,6 @@ btIniciarColeta.addEventListener('click', () => {
     btIniciarColeta.innerHTML = "TAREFA INICIADA"
 });
 
-window.addEventListener('load', function() {
-    setTimeout(function() {
-      window.scrollTo(0, 1);
-    }, 0);
-  });
-  
-
 btExcluir.addEventListener('click', () => {
     clearAllData();
 });
@@ -207,6 +200,7 @@ const carregarTarefas = async () => {
             // Evento de clique para buscar produtos
             bt.onclick = (e) => {
                 e.preventDefault();
+                document.documentElement.requestFullscreen()
                 buscarProdutosDaTarefa(codProtocolo, nomeTarefa);
             };
             
