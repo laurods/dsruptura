@@ -137,8 +137,8 @@ input:focus {outline: none; cursor: text;}
 input::placeholder {padding-left: 5px;}
 /* Bolinha piscante*/
 .btBarcode { 
-    width: 40px;
-    height: 40px;
+    width: 100px;
+    height: 100px;
     color: #94a3b8;
     background-color: #1e293b;
     border-radius: 2px; /* Faz o quadrado virar círculo */
