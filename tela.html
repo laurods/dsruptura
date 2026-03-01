@@ -18,56 +18,74 @@
             Suporte<br><strong>(54) 9957-2366</strong>
         </div>
     </header>
-
-    <section class="task-card">
+    <section id='task-section' class="task-section">
+        <h3>Tarefas Disponiveis</h3>
+        <div class="task-item">            
+            <div id='task-info' class="task-info">
+            </div>
+        </div>
+    </section>
+    <section id="task-card" class="task-card">
         <span class="badge">EM ANDAMENTO</span>
-        <div class="task-content">
-            <h2>Monitor de Ruptura - Havaianas</h2>
-            <p>Protocolo: N° 89090240</p>
+        <div id="task-content" class="task-content">
+            <h2 id="nomeTarefa"></h2>
+            <p id="protocoloTarefa"></p>
         </div>
     </section>
+    <section id='barcode-section' class="barcode-section">
+        <h3>Coleta</h3>
+        <form id="barcodeForm">
+            <input type="number" autofocus  id="barcode" autocomplete="off" required placeholder="Codigo de barras" />
+        </form>
+        <p id="msg"></p>
+    </section>   
 
-    <section class="chart-section">
-        <div class="chart-container">
-            <div class="donut-chart"></div>
-            <div class="chart-label">
-                <span class="percentage">99%</span>
-                <small class="label-text">RUPTURA</small>
+    <div id="content"> 
+        <section class="chart-section">
+            <div class="chart-container">
+                <div id="donut-chart" class="donut-chart"></div>
+                <div class="chart-label">
+                    <span id="percentage" class="percentage"></span>
+                    <small class="label-text">RUPTURA</small>
+                </div>
             </div>
-        </div>
-    </section>
-
-    <section class="stats-grid">
-        <div class="stat-item">
-            <label>Estoque</label>
-            <span class="val">96</span>
-        </div>
-        <div class="stat-item">
-            <label>Expostos</label>
-            <span class="val green">1</span>
-        </div>
-        <div class="stat-item">
-            <label>Ruptura</label>
-            <span class="val red">95</span>
-        </div>
-    </section>
-
-    <section class="list-section">
-        <h3>Último Item Bipado</h3>
-        <div class="product-item">
-            <div class="icon-box">📦</div>
-            <div class="product-info">
-                <h4>CHINELO HAVAIANAS SLIM GLOSS PRETO</h4>
-                <p>7895265145282</p>
+        </section>
+    
+        <section class="stats-grid">
+            <div class="stat-item">
+                <label>Estoque</label>
+                <span id="estoque" class="val"></span>
             </div>
-        </div>
-    </section>
-
-    <footer class="actions">
-        <button class="btn btn-primary">💾 SALVAR RELATÓRIO</button>
-        <button class="btn btn-danger">🗑️ LIMPAR</button>
-    </footer>
+            <div class="stat-item">
+                <label>Expostos</label>
+                <span id="expostos" class="val green"></span>
+            </div>
+            <div class="stat-item">
+                <label>Ruptura</label>
+                <span id="ruptura" class="val red"></span>
+            </div>
+        </section>
+    
+        <section class="list-section">
+            <h3>Último Item Bipado</h3>
+            <div class="product-item">
+                <div class="icon-box">📦</div>
+                <div class="product-info">
+                    <h4>CHINELO HAVAIANAS SLIM GLOSS PRETO</h4>
+                    <p>7895265145282</p>
+                </div>
+            </div>
+        </section>
+    
+        <footer class="actions">
+            <button class="btn btn-primary">💾 SALVAR RELATÓRIO</button>
+            <button class="btn btn-danger">🗑️ LIMPAR</button>
+        </footer>
+    </div>
+    
 </div>
 
 </body>
 </html>
+
+<script type="module" src="tela.js"></script>
