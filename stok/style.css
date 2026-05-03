@@ -156,7 +156,7 @@ body {
 .barcodeInput{
     outline: none; font-size: 0.5rem; width: 10%; height: 10px; border: 2px solid; border-radius: 8px; background: transparent; 
 }
-.barcodeInput:focus{outline: none; cursor: text; box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);}*/
+.barcodeInput:focus{outline: none; cursor: text; border: none;}
 .barcodeInput::placeholder {padding-left: 5px;}
 
 .taskInput{
