@@ -1,0 +1,201 @@
+  /* --- Reset & Variáveis de Design --- */
+  :root {
+    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --accent-color: #3b82f6;
+    --accent-hover: #2563eb;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --success-color: #10b981;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent; /* Remove o flash azul ao tocar no Android */
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg-gradient);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+/* --- Container Principal --- */
+.container {
+    width: 100%;
+    max-width: 480px; /* Perfeito para telas de celulares */
+    margin-top: 10vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.header h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+    background: linear-gradient(to right, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* --- Área de Upload (Estilo Dropzone) --- */
+.upload-card {
+    background: var(--card-bg);
+    border: 2px dashed rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Efeito de hover/active otimizado para toque */
+.upload-card:active, .upload-card.dragover {
+    border-color: var(--accent-color);
+    background: rgba(59, 130, 246, 0.1);
+    transform: scale(0.98);
+}
+
+.upload-icon {
+    width: 64px;
+    height: 64px;
+    background: rgba(59, 130, 246, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.upload-icon svg {
+    width: 32px;
+    height: 32px;
+    fill: var(--accent-color);
+}
+
+.upload-card span {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.upload-card small {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* Esconde o input original feio */
+#csvFile {
+    display: none;
+}
+
+/* --- Preview do Resultado (JSON) --- */
+.output-container {
+    display: none; /* Escondido até que um arquivo seja enviado */
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    animation: fadeIn 0.4s ease forwards;
+}
+
+.output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.output-header h2 {
+    font-size: 1rem;
+    color: var(--success-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Botão moderno de copiar */
+.copy-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.copy-btn:active {
+    background: var(--accent-color);
+    transform: scale(0.95);
+}
+
+/* Área de código com scroll nativo suave */
+pre {
+    background: rgba(15, 23, 42, 0.6);
+    padding: 15px;
+    border-radius: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.85rem;
+    overflow-x: auto;
+    max-height: 250px;
+    border: 1px solid var(--border-color);
+    color: #38bdf8;
+    -webkit-overflow-scrolling: touch; /* Rolagem suave no iOS/Android */
+}
+.btn {
+  width: 100%;
+  border: none;
+  padding: 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 10px;
+}
+
+.btn-primary { background: var(--accent-blue); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
+
+.taskInput{
+  outline: none; font-size: 1.6rem; width: 90%; height: 50px; background-color: transparent; border: none; border-bottom: #f8fafc 1px solid; 
+}
+
+/* Animação simples de entrada */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
