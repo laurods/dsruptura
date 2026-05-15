@@ -3,33 +3,308 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Criador de Tarefas</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Upload de Tarefa e CSV</title>
+    
+    <style>
+        /* --- Reset & Variáveis de Design --- */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --success-color: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent; /* Remove o flash azul ao tocar no Android */
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* --- Container Principal --- */
+        .container {
+            width: 100%;
+            max-width: 480px; /* Perfeito para telas de celulares */
+            margin-top: 8vh;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* --- Formulário e Inputs --- */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Input de texto moderno */
+        .task-input {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px 16px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .task-input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        /* --- Área de Upload (Estilo Dropzone) --- */
+        .upload-card {
+            background: var(--card-bg);
+            border: 2px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Efeito de clique/toque otimizado */
+        .upload-card:active {
+            border-color: var(--accent-color);
+            background: rgba(59, 130, 246, 0.1);
+            transform: scale(0.98);
+        }
+
+        .upload-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 5px;
+        }
+
+        .upload-icon svg {
+            width: 32px;
+            height: 32px;
+            fill: var(--accent-color);
+        }
+
+        .upload-card span {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .upload-card small {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Esconde o input de arquivo original */
+        #csvFile {
+            display: none;
+        }
+
+        /* --- Feedback de Sucesso --- */
+        .status-message {
+            display: none;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid var(--success-color);
+            color: #a7f3d0;
+            padding: 14px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 500;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
 
     <div class="container">
         <div class="header">
-            <p>Nome da Tarefa</p>
-            <input type="text" id="tarefa" class="taskInput">
+            <h1>Nova Tarefa</h1>
+            <p>Insira os dados e faça o upload do arquivo complementar</p>
         </div>
 
-        <label for="csvFile" class="upload-card" id="dropzone">
+        <div class="form-group">
+            <label for="taskName">Nome da Tarefa</label>
+            <input type="text" id="taskName" class="task-input" placeholder="Ex: Importação de Clientes Mai/2026" autocomplete="off">
+        </div>
+
+        <label for="csvFile" class="upload-card">
             <div class="upload-icon">
                 <svg viewBox="0 0 24 24">
                     <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
                 </svg>
             </div>
-            <span>Selecione o arquivo</span>
-            <small>Apenas arquivos .csv</small>
-            <span id="file-name"></span>
+            <span>Selecionar arquivo CSV</span>
+            <small>O arquivo será processado automaticamente</small>
         </label>
         
         <input type="file" id="csvFile" accept=".csv">
-        
+
+        <div class="status-message" id="statusMessage">
+            ✓ Arquivo processado com sucesso!
+            
+        </div>
     </div>
-        <button class="btn btn-primary" id="btn-upload">Enviar</button>
+
+    <script>
+        const taskNameInput = document.getElementById('taskName');
+        const fileInput = document.getElementById('csvFile');
+        const statusMessage = document.getElementById('statusMessage');
+
+        fileInput.addEventListener('change', async function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const csvText = e.target.result;
+                
+                // Converte o CSV para Objeto literal / Array (JSON interno)
+                const jsonResult = csvToObjects(csvText);
+                const taskName = taskNameInput.value.trim() || "Tarefa sem nome";
+
+                /* DICA PARA ANDROID WEBVIEW:
+                   Agora que os dados estão processados internamente nas variáveis 'taskName' e 'jsonResult',
+                   você pode enviá-los de volta para o código nativo do seu App Android (Java/Kotlin) usando:
+                   
+                   if (window.AndroidInterface) {
+                       window.AndroidInterface.sendDataToAndroid(taskName, JSON.stringify(jsonResult));
+                   }
+                */
+
+                console.log("Nome da Tarefa:", taskName);
+                console.log("Dados Convertidos:", jsonResult);
+                const dados = {
+                  descricao:taskName,
+                  protocolo: 'pendente', 
+                  produtos_data:jsonResult 
+                }
+                enviarDados(dados);
+            };
+
+            reader.readAsText(file);
+        });
+
+        // Oculta a mensagem de sucesso se o usuário começar a digitar um novo nome
+        taskNameInput.addEventListener('input', () => {
+            statusMessage.style.display = 'none';
+        });
+
+        // Parser Vanilla que retorna um Array de Objetos direto (sem stringificar em tela)
+        function csvToObjects(csv) {
+            const lines = csv.trim().split(/\r?\n/);
+            if (lines.length === 0 || lines[0] === "") return [];
+            
+            const headers = lines[0].split(',');
+            return lines.slice(1).map(line => {
+                const values = line.split(',');
+                const obj = {};
+                headers.forEach((header, i) => {
+                    obj[header.trim()] = values[i] ? values[i].trim() : "";
+                });
+                return obj;
+            });
+        }
+
+        const enviarDados = async (dados) => {
+          try {
+            const response = await fetch('https://mariadb-api.rbpezf.easypanel.host/api/tarefa', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(dados) // Envia o objeto formatado
+            });
+              if (response.ok) {
+                alert("Sucesso! Tarefa enviada.");
+                const retorno = await response.json();
+                console.log(retorno.message);
+                
+                
+            // Exibe feedback visual de sucesso na tela
+                statusMessage.style.display = 'block';
+              // Limpa o input de arquivo para permitir novos uploads seguidos se necessário
+                fileInput.value = '';
+              } else {
+                alert("Erro no servidor.");
+              }
+              } catch (error) {
+                alert("Erro ao conectar com a API.");
+              } finally {
+                    
+            }
+
+        }
+    </script>
 </body>
 </html>
-
-<script src="script.js"></script>
