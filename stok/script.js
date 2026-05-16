@@ -6,6 +6,7 @@ const header = document.getElementById('header');
 const secBarcodeInput = document.getElementById('secBarcodeInput');
 const secListRuptura = document.getElementById('list-ruptura');
 const inputBarcode = document.getElementById('barcodeInput');
+const inputTaskCode = document.getElementById('taskCodeInput');
 const btTaskSearch = document.getElementById('btTaskSearch');
 const btTaskSave = document.getElementById('bt-save-task');
 const pMsg = document.getElementById('msg');
@@ -17,7 +18,8 @@ const spanPercentagem = document.getElementById('percentage');
 const spanQuantRuptura = document.getElementById('qtd-ruptura');
 pTxtScan.innerHTML = 'Leia o codigo'
 btTaskSearch.addEventListener('click', () => {
-    buscarProdutosDaTarefa('89090240')
+    const taskCode = inputTaskCode.value.trim();
+    buscarProdutosDaTarefa(taskCode)
 });
 
 btTaskSave.addEventListener('click', () => {
@@ -83,7 +85,7 @@ document.getElementById('barcodeInput').addEventListener('keydown', (event) => {
         const codigo = event.target.value.trim();
         //const codigo = event.target.value;
         
-        if (codigo.length === 13) {
+        if (codigo.length >= 8) {
             //App.persistirBipados(codigo);
             App.productsBipados.add(codigo);
             //App.productsBipados.push(codigo);
@@ -99,17 +101,17 @@ document.getElementById('barcodeInput').addEventListener('keydown', (event) => {
     }
 });
 
-// 1. Função para buscar os produtos da tarefa com base no protocolo
-const buscarProdutosDaTarefa = async (codProtocolo) => {
+// 1. Função para buscar os produtos da tarefa com base no id
+const buscarProdutosDaTarefa = async (taskCode) => {
     
     try {
-        const response = await fetch(`https://mariadb-api.rbpezf.easypanel.host/api/tarefas/${codProtocolo}/produtos`);        
+        const response = await fetch(`https://mariadb-api.rbpezf.easypanel.host/api/tarefas/pendentes/${taskCode}`);        
         const produtos = await response.json();
         console.log('produtos', produtos)
-        App.productsABC = produtos // Persiste na ram
+        App.productsABC = produtos.produtos_data// Persiste na ram
         localStorage.setItem('estoque_ABC', JSON.stringify(produtos)); // Persiste no localhost
 
-        document.getElementById('protocoloTarefa').innerHTML = `Numero: ${codProtocolo}`;
+        document.getElementById('protocoloTarefa').innerHTML = `Numero: ${taskCode}`;
         
         if (produtos.length === 0) {
             document.getElementById('protocoloTarefa').innerHTML = `Nenhum produto encontrado para esta tarefa.`;            
@@ -147,7 +149,7 @@ const handleListItems = () => {
     // 2. Usa uma string única para atualizar o HTML de uma vez só (mais rápido)
     const htmlLote = App.productsRuptura.map(prod => `
         <div class="product-item">
-            <h4>${prod.descricao}</h4>
+            <h4>${prod.descricao} | ${prod.quant}</h4>
         </div>
     `).join('');
     
